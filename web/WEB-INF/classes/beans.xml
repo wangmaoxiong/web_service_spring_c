@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   					   http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+						   http://www.springframework.org/schema/context
+						   http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		              	   http://www.springframework.org/schema/tx
+						   http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		              	   http://www.springframework.org/schema/mvc
+		              	   http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		              	   http://cxf.apache.org/jaxws
+		              	   http://cxf.apache.org/schemas/jaxws.xsd">
+
+    <!-- jaxws:client 这里 spring会给它自动进行实例化，为 UserService 接口创建实例，后期自己使用@Resource获取使用即可-->
+    <!-- id：bean 的唯一标识，使用接口名首字母小写即可；serviceClass：服务接口的全路径，会交由spring容器管理，实例化-->
+    <!-- address：webService 服务端 wsdl 的访问路径，注意这里结尾不用加 "?wsdl"，以后可以直接调用 serviceClass 中的方法-->
+    <jaxws:client id="userService"
+                  serviceClass="com.lct.www.service.UserService"
+                  address="http://localhost:8080/web_service_spring_s/userService/userService">
+
+        <!-- 出拦截器配置-->
+        <jaxws:outInterceptors>
+            <!--LoggingOutInterceptor 是CXF自身提供的日志出拦截器，直接使用即可 -->
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+            <!--WsUserInterceptor：自定义的拦截器，用于提供验证账号与密码，通过构造器赋值 -->
+            <bean class="com.lct.www.interceptors.WsUserInterceptor">
+                <constructor-arg name="name" value="root"/>
+                <constructor-arg name="password" value="123456"/>
+            </bean>
+        </jaxws:outInterceptors>
+    </jaxws:client>
+</beans>

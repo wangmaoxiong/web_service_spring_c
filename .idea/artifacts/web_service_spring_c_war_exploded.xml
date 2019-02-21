@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="web_service_spring_c:war exploded">
+    <output-path>D:/apache-tomcat-9.0.11/webapps/web_service_spring_c</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="web_service_spring_c/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="web_service_spring_c" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="lib" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
